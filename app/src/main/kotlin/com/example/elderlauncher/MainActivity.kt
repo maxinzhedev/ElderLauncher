@@ -37,13 +37,13 @@ class MainActivity : ComponentActivity() {
                 Surface { 
                     when (currentScreen) {
                         is Screen.Home -> HomeScreen(
-                            onAddContact = {},
-                            onEditContact = { /* TODO */ },
-                            onCallVoice = { /* TODO */ },
-                            onCallVideo = { /* TODO */ },
+                            onAddContact = { currentScreen = Screen.AddEdit },
+                            onEditContact = { /* editing not wired yet in MVP */ currentScreen = Screen.AddEdit },
+                            onCallVoice = { /* TODO: wechat automation */ },
+                            onCallVideo = { /* TODO: wechat automation */ },
                             onOpenSettings = { currentScreen = Screen.Settings }
                         )
-                        is Screen.AddEdit -> AddEditContactScreen(onDone = { currentScreen = Screen.Home })
+                        is Screen.AddEdit -> AddEditContactScreen(contactToEdit = null, onDone = { currentScreen = Screen.Home })
                         is Screen.Settings -> SettingsScreen(onBack = { currentScreen = Screen.Home })
                     }
                 }
@@ -55,5 +55,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMain() {
-    MaterialTheme { HomeScreen(onAddContact = {}, onEditContact = {}, onCallVoice = {}, onCallVideo = {}, onOpenSettings = {}) }
+    MaterialTheme { HomeScreen(onAddContact = { }, onEditContact = { }, onCallVoice = { }, onCallVideo = { }, onOpenSettings = { }) }
 }
