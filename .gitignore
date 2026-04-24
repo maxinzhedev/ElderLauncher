@@ -1,0 +1,14 @@
+# Local workspace noise
+New project/
+Obsidian Vault/
+rrweb-editor/
+rrweb-editor2/
+self-website/
+self-website2/
+self-website3/
+self-website4/
+self-website5/
+Image-Line/
+*.pdf
+.DS_Store
+.local
