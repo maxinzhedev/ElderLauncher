@@ -71,7 +71,18 @@ fun HomeScreen(
         // Load data on first composition
         LaunchedEffect(Unit) {
             try {
-                contacts = repo.getTopContacts()
+                val top = repo.getTopContacts()
+                contacts = if (top.isNotEmpty()) top else {
+                    // Fallback sample data for MVP demo
+                    listOf(
+                        Contact(id = 101, name = "父亲", wechatName = "Dad", colorHex = "#FFB74D"),
+                        Contact(id = 102, name = "母亲", wechatName = "Mom", colorHex = "#4FC3F7"),
+                        Contact(id = 103, name = "儿子", wechatName = "Son", colorHex = "#81C784"),
+                        Contact(id = 104, name = "女儿", wechatName = "Daughter", colorHex = "#BA68C8"),
+                        Contact(id = 105, name = "姥姥", wechatName = "Grandma", colorHex = "#90A4AE"),
+                        Contact(id = 106, name = "爷爷", wechatName = "Grandpa", colorHex = "#FFA726")
+                    )
+                }
             } catch (_: Throwable) {
                 // ignore
             }
