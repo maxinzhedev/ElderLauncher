@@ -33,6 +33,17 @@ class WeChatAccessibilityService : AccessibilityService() {
         fun stopCall() {
             instance?.stopAutomation()
         }
+
+        // Callback for termination notifications (called when automation ends or errors)
+        private var onTerminated: (() -> Unit)? = null
+        fun setOnTerminatedCallback(callback: () -> Unit) {
+            onTerminated = callback
+        }
+
+        // Internal method to invoke termination callback (call from service instance)
+        internal fun signalTerminated() {
+            onTerminated?.invoke()
+        }
     }
 
     private enum class AutoState {
@@ -92,6 +103,8 @@ class WeChatAccessibilityService : AccessibilityService() {
         retryCount = 0
         handler.removeCallbacksAndMessages(null)
         Log.i(TAG, "Automation stopped by user/request")
+        // Notify external consumer (ViewModel) about termination
+        signalTerminated()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
