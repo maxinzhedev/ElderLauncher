@@ -1,6 +1,9 @@
 package com.example.elderlauncher
 
 import android.os.Bundle
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.elderlauncher.ui.HomeScreen
 import com.example.elderlauncher.ui.AddEditContactScreen
 import com.example.elderlauncher.ui.SettingsScreen
+import com.example.elderlauncher.ui.WeChatAutomation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 
@@ -31,6 +35,11 @@ sealed class Screen {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Request overlay permission if not granted
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            startActivityForResult(intent, 1234)
+        }
         setContent {
             var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
             MaterialTheme {
@@ -39,8 +48,8 @@ class MainActivity : ComponentActivity() {
                         is Screen.Home -> HomeScreen(
                             onAddContact = { currentScreen = Screen.AddEdit },
                             onEditContact = { /* editing not wired yet in MVP */ currentScreen = Screen.AddEdit },
-                            onCallVoice = { /* TODO: wechat automation */ },
-                            onCallVideo = { /* TODO: wechat automation */ },
+                            onCallVoice = { contactId -> WeChatAutomation.callVoice(contactId) },
+                            onCallVideo = { contactId -> WeChatAutomation.callVideo(contactId) },
                             onOpenSettings = { currentScreen = Screen.Settings }
                         )
                         is Screen.AddEdit -> AddEditContactScreen(contactToEdit = null, onDone = { currentScreen = Screen.Home })
