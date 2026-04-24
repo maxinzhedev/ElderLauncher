@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                Surface { HomeScreen(onAddContact = {}, onEditContact = {}, onCallVoice = {}, onCallVideo = {}) }
+                Surface { HomeScreen(onAddContact = {}, onEditContact = {}, onCallVoice = {}, onCallVideo = {}, onOpenSettings = { /* TODO: navigate to hidden settings */ }) }
             }
         }
     }
@@ -25,5 +25,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMain() {
-    MaterialTheme { HomeScreen(onAddContact = {}, onEditContact = {}, onCallVoice = {}, onCallVideo = {}) }
+    MaterialTheme { HomeScreen(onAddContact = {}, onEditContact = {}, onCallVoice = {}, onCallVideo = {}, onOpenSettings = {}) }
 }
